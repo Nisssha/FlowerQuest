@@ -9,10 +9,13 @@ public class FlowerGrowing : MonoBehaviour {
     public Sprite[] sprites;
     public Image flowerImage;
     private Button picking;
+    private Seeds seedsScript;
+    private Planting planting;
 
     bool firstGrowDone = false;
     bool secondGrowDone = false;
     bool picked = false;
+    bool pickable = false;
     DateTime pickingTime;
 
     int currentSprite = 0;
@@ -20,7 +23,9 @@ public class FlowerGrowing : MonoBehaviour {
     private void Start()
     {
         picking = gameObject.GetComponent<Button>();
-        picking.enabled = false;
+        seedsScript = GameObject.FindObjectOfType<Seeds>();
+        planting = gameObject.GetComponentInParent<Planting>();
+       // picking.enabled = false;
         flowerImage = gameObject.GetComponent<Image>();
         InvokeRepeating("CheckGrowth", 1.0f, 1.0f);
     }
@@ -55,12 +60,14 @@ public class FlowerGrowing : MonoBehaviour {
                 {
                     ChangeSprite();
                     secondGrowDone = true;
-                    picking.enabled = true;
+            //  picking.enabled = true;
+            pickable = true;
                 } else if (picked && DateTime.Now.CompareTo(regrow) == 1)
                 {
                 picked = false;
-                picking.enabled = true;
+               // picking.enabled = true;
                 secondGrowDone = true;
+            pickable = true;
                 ChangeSprite();
                  }
     }
@@ -73,11 +80,29 @@ public class FlowerGrowing : MonoBehaviour {
 
     public void PickingFlower()
     {
-        currentSprite--;
-        flowerImage.sprite = sprites[currentSprite];
-        secondGrowDone = false;
-        picking.enabled = false;
-        picked = true;
-        pickingTime = DateTime.Now;
+        if (pickable)
+        {
+            currentSprite--;
+            flowerImage.sprite = sprites[currentSprite];
+            secondGrowDone = false;
+            //picking.enabled = false;
+            seedsScript.AddSeeds();
+            picked = true;
+            pickable = false;
+            pickingTime = DateTime.Now;
+        }
+    }
+
+    public void DestroyFlower()
+    {
+        Debug.Log("Destroy called");
+        if (DestroyFlowerClass.destroyActive)
+        {
+            Debug.Log("Destroy if true");
+            //GameObject flowerToDie = gameObject.GetComponentInParent<Planting>().GetComponentInChildren<FlowerGrowing>();
+            // Destroy(flowerToDie);
+            planting.flowerPlanted = false;
+            Destroy(this.gameObject);
+        }
     }
 }
