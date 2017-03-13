@@ -1,0 +1,6 @@
+Rabbit;Hey what's up;0;R
+Cat;Nothing much man;0;L
+Rabbit;Oh that's cool;0;R
+Player;Restart:line,0;Continue:line,4
+Cat;This is a test;0;L
+Rabbit;Test test test test;0;R
