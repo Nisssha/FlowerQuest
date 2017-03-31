@@ -132,13 +132,27 @@ public class SaveLoadUtility : MonoBehaviour {
 				Debug.Log("Added GameObject to prefabDictionary: " + oi.gameObject.name);
 			}
 		}
-	}
 
-	// Update is called once per frame
-	void Update () {
+        //used to load from start menu
+        if (LoadOrNotToLoad.loadGame)
+        {
+            LoadGame(quickSaveName);
+            LoadOrNotToLoad.loadGame = false;
+        }
 
-
-	}
+        Debug.Log(TransportResultScript.flowerQuest);
+        if (TransportResultScript.flowerQuest)
+        {
+            if (TransportResultScript.win)
+            {
+                SpeedUpHandle speedUp = GameObject.FindObjectOfType<SpeedUpHandle>();
+                speedUp.WinFlowerQuest(TransportResultScript.over);
+                TransportResultScript.flowerQuest = false;
+                TransportResultScript.win = false;
+                TransportResultScript.over = 0;
+            }
+        }
+    }
 
 	//use this one for specifying a filename
 	public void SaveGame(string saveGameName) {

@@ -14,7 +14,6 @@ public class StoryTextChanger : MonoBehaviour {
         storyState = GameObject.FindObjectOfType<StoryState>();
         storyBank = GameObject.FindObjectOfType<StoryBank>();
         storyText = gameObject.GetComponentInChildren<Text>();
-
     }
 	
 	// Update is called once per frame
@@ -23,8 +22,16 @@ public class StoryTextChanger : MonoBehaviour {
         {
             storyState = GameObject.FindObjectOfType<StoryState>();
         }
-/*
-		if(storyState.newGame == true)
+        if (storyBank == null)
+        {
+            storyBank = GameObject.FindObjectOfType<StoryBank>();
+        }
+        if (storyText == null)
+        {
+            storyText = gameObject.GetComponentInChildren<Text>();
+        }
+
+        if (storyState.newGame == true)
         {
             transform.SetAsLastSibling();
             storyText.text = storyBank.dialog1.text;
@@ -38,6 +45,6 @@ public class StoryTextChanger : MonoBehaviour {
             }
 
         }
-        */
+        
 	}
 }

@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: 20a0a107a8b8db3438893f6a7d4d57a0
-timeCreated: 1487255015
+guid: 08f196ba5a9f2a64f904261f06efa3e9
+timeCreated: 1490794652
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: pinkRose_0
-    21300002: pinkRose_1
-    21300004: pinkRose_2
+    21300000: pink_roses_by_spdy4-db2xv6l_0
+    21300002: pink_roses_by_spdy4-db2xv6l_1
+    21300004: pink_roses_by_spdy4-db2xv6l_2
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -43,7 +43,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 150
+  spritePixelsToUnits: 250
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -81,39 +81,39 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pinkRose_0
+      name: pink_roses_by_spdy4-db2xv6l_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 192
-        height: 180
+        width: 203
+        height: 1017
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: pinkRose_1
+      name: pink_roses_by_spdy4-db2xv6l_1
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
-        width: 192
-        height: 180
+        x: 365
+        y: 1
+        width: 525
+        height: 1017
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: pinkRose_2
+      name: pink_roses_by_spdy4-db2xv6l_2
       rect:
         serializedVersion: 2
-        x: 384
-        y: 0
-        width: 192
-        height: 180
+        x: 1140
+        y: 8
+        width: 548
+        height: 1010
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

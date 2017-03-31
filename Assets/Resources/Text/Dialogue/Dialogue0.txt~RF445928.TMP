@@ -1,0 +1,6 @@
+
+Aiden;Hi! You're new, right? I'm Aiden. Are you working for Miss Constance now?;0;R
+Kitty;Actually I'm her great niece. I'm Kitty.;0;R
+Aiden;Nice to meet you, Kitty. I would like to buy a flower. My ex ballet teacher has birthday today.;0;R
+Player;You do seem like a ballet type of guy. Buying flowers, fluttering eyelashes:line,0;That's very nice! I'll get a ... (picking from available flowers) for you.:line,4
+Player;Restart:line,0;Continue:line,4

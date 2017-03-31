@@ -1,0 +1,30 @@
+Stranger;Hello? Grace?;0;R
+Kitty;Sorry, my grandma is out of town. I'm Kitty.;0;R
+Stranger;Oh, well then. Just wanted to give you heads up, lots of people may come today.;0;R
+Kitty;Why?;0;R
+Stranger;Unfortunately, reason is quite gruesome. One of our souls passed today.;0;R
+Player;May I ask who am I talking to?:line,8:none:none:0;Who did die?:line,6:none:Priest:-5;I'm so sorry, my condolences.:line,20:none:Priest:15
+Priest;Lucy House, ballet teacher. Well, I just wanted to let you know, I should go now. Goodbye.;0;R
+End;End;0;R
+Stranger;Oh, sorry, completely forgot to introduce myself. I'm Richard Butler, a friend of your dear gran and priest at our church.;0;R
+Kitty;Nice to meet you. Who did die?;0;R
+Stranger;Well, Lucy House, ballet teacher. Did you happen to know her?;0;R
+Player;No, not personally. But I heard about her.:line,12:none:none:0;No.:line,16:none:none:0
+Priest;How so? I didn't even know Grace left, how long are you in town?;0;R
+Kitty;I just arrived yesterday.;0;R
+Priest;Have good time here, then. Goodbye.;0;R
+End;End;0;R
+Priest;Quite understable, I don't remember you being here ever before.;0;R
+Kitty;I never visited gran before, dunno why.;0;R
+Priest;A share she is not here, she is a terrific woman. I will be going now. Goodbye.;0;R
+End;End;0;R
+Stranger;Oh, what a wonderful granddaughter you are, but the condolences are not for me! I'm only a priest. The ones you should give your condolences to are poor Lucy's students. She was a ballet teacher in town.;0;R
+Player;That's very sad. Her students must be devastated.:line,22:none:Priest:5;Poor Aiden. He really liked her.:line,26:none:Aiden:5
+Priest;Yes, she was very well liked, she spent so much time with them. No wonder, she loved children.;0;R
+Player;Should I sent some flowers in name of grandmother to her family?:line,24:none:Priest:5;Did she have any?:line,24:none:none:0
+Priest;No, she lived all alone. I should get going, there's lot to do for the funeral. Nice to meet you, Kitty, hope you have great time here, regardless.;0;R
+End;End;0;R
+Priest;Oh, have you met Aiden? He's a good kid.;0;R
+Player;Yes, he came for some flowers yesterday.:line,28:none:none:0;Yes.:line,28:none:none:0
+Priest;That's nice. I should get going, there's lot to do for the funeral. Nice to meet you, Kitty, hope you have great time here, regardless.;0;R
+End;End;0;R

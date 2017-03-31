@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c325ee1ef760ed24296ef4ae27a162ed
-timeCreated: 1487254998
+guid: 680f6e181a33e044ba92a4126aa2f8d8
+timeCreated: 1490785105
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -43,7 +43,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 150
+  spritePixelsToUnits: 250
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -85,9 +85,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 192
-        height: 180
+        y: 1
+        width: 396
+        height: 463
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -97,10 +97,10 @@ TextureImporter:
       name: narcissuss_1
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
-        width: 192
-        height: 180
+        x: 334
+        y: 2
+        width: 595
+        height: 773
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -110,10 +110,10 @@ TextureImporter:
       name: narcissuss_2
       rect:
         serializedVersion: 2
-        x: 384
+        x: 966
         y: 0
-        width: 192
-        height: 180
+        width: 876
+        height: 993
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

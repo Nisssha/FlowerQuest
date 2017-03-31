@@ -1,0 +1,32 @@
+Aiden;Hi again, Kitty.;0;R
+Player;Hi, Aiden. I heard what happened, I'm so sorry.:line,2:none:Aiden:5;Hi. What can I get you?:line,12:none:none:0
+Aiden;Thanks. Everyone's just so shocked, she was so young...;0;R
+Player;What happened?:line,4:none:none:0;Are you holding all right?:line,20:none:Aiden:5
+Aiden;No one knows yet. I don't even know who found her. Officer closed the house in the morning and only policmen are allowed inside.;0;R
+Player;Do you think it was natural death?:line,6:none:none:0;Do you think someone... hurt her?:line,14:none:Aiden:5
+Aiden;She was so young, but... I don't know. I guess we will find out soon.;0;R
+Kitty;I hope it's true. What can I get you?;0;R
+Aiden;Four red roses, please.;0;R
+SellMultiple;Wait:0:0:none:none:0;Sell 4 Red roses:1:4:RedRose:none:0
+Kitty;Hope it's all over soon.;0;R
+End;End;0;R
+SellMultiple;Wait:0:0:none:none:0;Sell 4 Red roses:1:4:RedRose:none:0
+End;End;0;R
+Aiden;God, I hope not, she was so kind and sweet, there was no reason.;0;R
+Kitty;I hope it's true. What can I get you?;0;R
+Aiden;Four red roses, please.;0;R
+SellMultiple;Wait:0:0:none:none:0;Sell 4 Red roses:1:4:RedRose:none:0
+Kitty;Hope it's all over soon.;0;R
+End;End;0;R
+Aiden;Yes, I'm all right. My sisters are so much worse, they were so close to Miss Lucy.;0;R
+Player;Oh, you have sisters? How many?:line,22:none:none:0;Do you know what was Lucy's favourite flower?:line,28:lucyFavFlower:none:0
+Aiden;Three, all of them older than me.;0;R
+Kitty;What can I get you?;0;R
+Aiden;Four red roses, please.;0;R
+SellMultiple;Wait:0:0:none:none:0;Sell 4 Red roses:1:4:RedRose:none:0
+Player;There you go. Hope your sisters feel better soon!:line,27:none:Aiden:5;Thank you for your purchase.:line,27:none:none:0
+End;End;0;R
+Aiden;Yes, she loved roses, especially red. I would like to get 4 of them.;0;R
+SellMultiple;Wait:0:0:none:none:0;Sell 4 Red roses:1:4:RedRose:none:0
+Player;There you go. Hope your sisters feel better soon!:line,27:none:Aiden:5;Thank you for your purchase.:line,27:none:none:0
+End;End;0;R

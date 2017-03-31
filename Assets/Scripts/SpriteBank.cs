@@ -8,6 +8,7 @@ public class SpriteBank : MonoBehaviour
     public Sprite[] blackRose = new Sprite[3];
     public Sprite[] pinkRose = new Sprite[3];
     public Sprite[] redRose = new Sprite[3];
+    public Sprite[] moonRose = new Sprite[3];
     public Sprite[] dandelion = new Sprite[3];
     public Sprite[] narcissuss = new Sprite[3];
     public Sprite[] tulip = new Sprite[3];
@@ -41,7 +42,12 @@ public class SpriteBank : MonoBehaviour
         else if (flowerName == "Pink rose")
         {
             return pinkRose;
-        }else { throw new Exception("name not found"); }
+        }
+        else if (flowerName == "Moon rose")
+        {
+            return moonRose;
+        }
+        else { throw new Exception("name not found"); }
     }
 
 

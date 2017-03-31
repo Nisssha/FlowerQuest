@@ -13,49 +13,52 @@ public static class SaveLoad {
 	//also useful if you need access to all other OIs in one of your script's OnSave and OnLoad functions, so you don't have to use FindObjectOfType again and again.
 
 	public static void SaveScene(SaveGame saveGame, string saveGamePath) {
+     
+            BinaryFormatter bf = new BinaryFormatter();
 
-		BinaryFormatter bf = new BinaryFormatter();
-		
-		// 1. Construct a SurrogateSelector object
-		SurrogateSelector ss = new SurrogateSelector();
-		// 2. Add the ISerializationSurrogates to our new SurrogateSelector
-		AddSurrogates(ref ss);
-		// 3. Have the formatter use our surrogate selector
-		bf.SurrogateSelector = ss;
-		
-		//Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
-		//You can also use any path you like
-		CheckDirectory(saveGamePath);
-		saveGamePath = CheckPath(saveGamePath, false);
+            // 1. Construct a SurrogateSelector object
+            SurrogateSelector ss = new SurrogateSelector();
+            // 2. Add the ISerializationSurrogates to our new SurrogateSelector
+            AddSurrogates(ref ss);
+            // 3. Have the formatter use our surrogate selector
+            bf.SurrogateSelector = ss;
 
-		FileStream file = File.Create (saveGamePath + saveGame.savegameName + ".sav"); //you can call it anything you want including the file extension
-		bf.Serialize(file, saveGame);
-		file.Close();
+            //Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
+            //You can also use any path you like
+            CheckDirectory(saveGamePath);
+            saveGamePath = CheckPath(saveGamePath, false);
+
+            FileStream file = File.Create(saveGamePath + saveGame.savegameName + ".sav"); //you can call it anything you want including the file extension
+            bf.Serialize(file, saveGame);
+            file.Close();
+       
 	}	
 	
 	public static SaveGame LoadScene(string gameToLoad, string saveGamePath) {
 
-		saveGamePath = CheckPath(saveGamePath, false);
+            saveGamePath = CheckPath(saveGamePath, false);
 
-		if(File.Exists(saveGamePath + gameToLoad + ".sav")) {
+            if (File.Exists(saveGamePath + gameToLoad + ".sav"))
+            {
 
-			BinaryFormatter bf = new BinaryFormatter();
-			// 1. Construct a SurrogateSelector object
-			SurrogateSelector ss = new SurrogateSelector();
-			// 2. Add the ISerializationSurrogates to our new SurrogateSelector
-			AddSurrogates(ref ss);
-			// 3. Have the formatter use our surrogate selector
-			bf.SurrogateSelector = ss;
-			
-			FileStream file = File.Open(saveGamePath + gameToLoad + ".sav", FileMode.Open);
-			SaveGame loadedGame = (SaveGame)bf.Deserialize(file);
-			file.Close();
-			return loadedGame;
-		}
-		else {
-			Debug.Log(gameToLoad + " does not exist!");
-			return null;
-		}
+                BinaryFormatter bf = new BinaryFormatter();
+                // 1. Construct a SurrogateSelector object
+                SurrogateSelector ss = new SurrogateSelector();
+                // 2. Add the ISerializationSurrogates to our new SurrogateSelector
+                AddSurrogates(ref ss);
+                // 3. Have the formatter use our surrogate selector
+                bf.SurrogateSelector = ss;
+
+                FileStream file = File.Open(saveGamePath + gameToLoad + ".sav", FileMode.Open);
+                SaveGame loadedGame = (SaveGame)bf.Deserialize(file);
+                file.Close();
+                return loadedGame;
+            }
+            else
+            {
+                Debug.Log(gameToLoad + " does not exist!");
+                return null;
+            }
 	}
 
 	public static void SaveGameObject(SceneObject gameObjectToSave, string path, string fileName) {

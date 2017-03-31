@@ -9,7 +9,7 @@ public class Seeds : MonoBehaviour {
     public static bool seedsActive = false;
 
     private Text itemText;
-    public bool newGame = true; //TODO put it somwhere else
+    public bool newGame = true;
 
 
     [SaveMember]
@@ -29,25 +29,16 @@ public class Seeds : MonoBehaviour {
         here.localPosition = positionButton;
 
         itemText = gameObject.GetComponentInChildren<Text>();
-        itemText.text = "Seeds: " + seeds.ToString();
+        itemText.text = seeds.ToString();
     }
 
     private void Awake()
     {
         if (newGame)
         {
-            seeds = 13;
+            seeds = 10; //final: 5
             newGame = false;
         }
-        /*
-        Debug.Log(itemText + " itemText");
-        if (itemText == null)
-        {
-            itemText = gameObject.GetComponentInChildren<Text>();
-            itemText.text = "Seeds: " + seeds.ToString();
-            Debug.Log(itemText.text);
-        }
-        */
     }
 
 
@@ -55,38 +46,18 @@ public class Seeds : MonoBehaviour {
     {
         itemText = gameObject.GetComponentInChildren<Text>();
         seeds--;
-        itemText.text = "Seeds: " + seeds.ToString();
+        itemText.text = seeds.ToString();
     }
 
     public void AddSeeds()
     {
-        Debug.Log(gameObject.GetComponent<Seeds>());
         itemText = gameObject.GetComponentInChildren<Text>();
         seeds++;
-        itemText.text = "Seeds: " + seeds.ToString();
+        itemText.text = seeds.ToString();
     }
 
     public void ActivateSeedsFunction()
     {
-
         seedsActive = true;
-        Debug.Log("Seeds active: " + seedsActive);
     }
-
-    /*
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && !seedsActive)
-        {
-            seedsActive = true;
-            Debug.Log("Seeds active: " + seedsActive);
-        }else if (Input.GetMouseButtonDown(0) && seedsActive)
-        {
-            seedsActive = false;
-            Debug.Log("Seeds active: " + seedsActive);
-        }
-    }
-    */
-
-
 }

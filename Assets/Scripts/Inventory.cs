@@ -3,10 +3,10 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 public class Inventory : MonoBehaviour
 {
-    public const int numItemSlots = 4;
-    public Image[] itemImages;                           // = new Image[numItemSlots];
-    //[SaveMember]public List<Item> items; // = new List<Item>();                          // public Item[] items = new Item[numItemSlots];
-    public Text[] itemText;                                // = new Text[numItemSlots];
+    public int numItemSlots = 10;
+    public Image[] itemImages;
+    public Text[] itemText;
+    public Text[] itemName;
     [SaveMember]public int[] amount;
     [SaveMember]public string[] flowerNames;
 
@@ -18,9 +18,7 @@ public class Inventory : MonoBehaviour
     [SaveMember]
     public Vector3 scaleInventory;
 
-
-    
-public void Start()
+    public void Start()
     {
         if (here == null)
         {
@@ -31,137 +29,75 @@ public void Start()
         here.localPosition = positionInventory;
         here.localScale = scaleInventory;
 
-        //Debug.Log(flowerNames.Length);
-        //Debug.Log(amount.Length);
-
         if (amount.Length == 0)
         {
-            amount = new int[4];
+            amount = new int[numItemSlots];
         }
-        itemImages = new Image[4];
-        itemText = new Text[4];
+        itemImages = new Image[numItemSlots];
+        itemText = new Text[numItemSlots];
+        itemName = new Text[numItemSlots];
         if (flowerNames.Length == 0)
         {
-            flowerNames = new string[4];
+            flowerNames = new string[numItemSlots];
         }
-
-        
-
-
-
-
-            /*
-            //items = new Item[4];
-            Debug.Log("Item count: " + items.Count);
-
-            if (items.Count == 0)
-            {
-                Debug.Log("items were null");
-                List<Item> items = new List<Item>();
-             }
-
-    /*
-            for (int i = 0; i < 4; i++)
-            {
-                if(i == items.Count)
-                {
-                    /*
-                    Item instanceFlower = ScriptableObject.CreateInstance<Item>();
-                    instanceFlower.nameFlower = "none";
-                    instanceFlower.sprite = null;
-
-                    Item instanceFlower = new Item();
-                    items.Add(instanceFlower);
-                    Debug.Log("Item count: " + items.Count);
-                    //items[i] = new Item();
-                }
-            }
-
-    */
-        }
+    } 
 
     public void Update()
     {
-        if (itemImages[3] == null)
+        if (itemImages[numItemSlots - 1] == null)
         {
-            //Debug.Log("itemImages[3] == null");
-            //  Image[] slotsImage = gameObject.GetComponentsInChildren<Image>();
-            // should be private and found in children when run, we can loose background image for easier work
-
-            // ObjectIdentifier[] slots = gameObject.GetComponentsInChildren<ObjectIdentifier>();
             Slot[] slots = gameObject.GetComponentsInChildren<Slot>();
-            //foreach (Slot slot in slots)
+
             for (int i = 0; i < numItemSlots; i++)
             {
-                //Debug.Log(slots[i].GetComponent<ItemImage>());
                 itemImages[i] = slots[i].GetComponentInChildren<ItemImage>().GetComponent<Image>();
 
-                //itemImages = slot.GetComponentInChildren<ItemImage>().GetComponent<Image>();
-                // Debug.Log(itemImages[i]);
+                Text[] texts = slots[i].GetComponentsInChildren<Text>();
 
-                itemText[i] = slots[i].GetComponentInChildren<Text>();
+                foreach (Text slot in texts)
+                {
+                    if (slot.tag == "FlowerName")
+                    {
+                        itemName[i] = slot;
+                    }
+                    else
+                    {
+                        itemText[i] = slot;
+                    }
+                }
 
                 if (amount[i] != 0)
                 {
                     SpriteBank bank = GameObject.FindObjectOfType<SpriteBank>();
                     itemImages[i].sprite = bank.SetSprites(flowerNames[i])[2];
+                    itemName[i].text = flowerNames[i].ToString();
                     itemImages[i].enabled = true;
-                    //Debug.Log(bank.SetSprites(flowerNames[i])[2]);
                     itemText[i].text = amount[i].ToString();
                 }
-                // itemText = slot.GetComponentInChildren<Text>();
-                //  Debug.Log(itemText[i]);
-
             }
         }
     }
 
-
-
-    // public void AddItem(Item itemToAdd)
+    // ADD DISPLAYING FLOWER NAMES
     public void AddItem(Sprite image, string nameFlower)
     {
-        // Debug.Log(itemToAdd);
-        //  Debug.Log(itemToAdd.sprite);
-        // Debug.Log(items[0].sprite);
-        
-   
-        //TODO make flowername lists on positions (can display them as well)
-        
         for (int i = 0; i < 4; i++)
         {
-            //Debug.Log(itemImages[i]);
-
-
-            if (itemImages[i] == null)
+            GetSlots();
+        
+            if (itemImages[i].sprite != null && itemImages[i].sprite == image)
             {
-                Slot[] slots = gameObject.GetComponentsInChildren<Slot>();
-
-                {
-                    itemImages[i] = slots[i].GetComponentInChildren<ItemImage>().GetComponent<Image>();
-
-                    itemText[i] = slots[i].GetComponentInChildren<Text>();
-                }
-            }
-
-
-                //TODO add checking all the positions for duplicate
-                //if (items[i].sprite != null && itemToAdd.nameFlower == items[i].nameFlower)
-                if (itemImages[i].sprite != null && itemImages[i].sprite == image)
-            {
-                Debug.Log("Should stack now");
                 amount[i]++;
-                Debug.Log("Number of " + nameFlower + " on inventory position: " + i + " is " + amount[i]);
+                itemName[i].text = nameFlower;
                 itemText[i].text = amount[i].ToString();
 
                 return;
             }
             else if (itemImages[i].sprite == null)   
             {
-                Debug.Log("should do new item");
-               // items[i] = itemToAdd;
                 itemImages[i].sprite = image;
                 itemImages[i].enabled = true;
+                itemName[i].text = nameFlower;
                 flowerNames[i] = nameFlower;
                 amount[i] = 1;
                 itemText[i].text = amount[i].ToString();
@@ -169,28 +105,123 @@ public void Start()
             }     
     }    
 }
-    /*
-public void RemoveItem(Item itemToRemove)
-{
-    for (int i = 0; i < items.Length; i++)
+
+    public void RemoveOneItem(string flowerToSell)
     {
-        if (items[i] == itemToRemove)
+        for (int i = 0; i < numItemSlots; i++)
         {
-            items[i] = null;
-            itemImages[i] = null;
-            itemImages[i].enabled = false;
-            return;
+            GetSlots();
+            if (flowerNames[i] == flowerToSell)
+            {
+                amount[i]--;
+                itemText[i].text = amount[i].ToString();
+            }
         }
     }
-}
 
-public void SellItems(int howMany)
-{
-    if (amount[0] >= howMany)
+    public void RemoveMultipleItems(string[] flowerToSell, int[] amountRequested)
     {
-        amount[0] = amount[0] - howMany;
-        itemText[0].text = amount[0].ToString();
+        for (int i = 0; i <= flowerToSell.Length - 1; i++)
+        {
+            GetSlots();
+            Debug.Log("Loop number" + i);
+            Debug.Log("Looking for: " + flowerToSell[i] + " in amount of " + amountRequested[i]);
+
+            for (int j = 0; j < numItemSlots; j++)
+            {
+                if (flowerNames[j] == null || flowerNames[j] != flowerToSell[i])
+                {
+                    continue;
+                }
+                if (flowerNames[j] == flowerToSell[i] && amount[j] >= amountRequested[i])
+                {
+                    Debug.Log("Found flower in inventory, remove " + amountRequested[i] + flowerToSell[i]);
+                    amount[j] = amount[j] - amountRequested[i];
+                    itemText[j].text = amount[j].ToString();
+                    break;
+                }
+            }
+        }
     }
-}
-*/
+
+    public bool CheckAvailabilitySingle(string flowerToSell)
+    {
+        for (int i = 0; i < numItemSlots; i++)
+        {
+            GetSlots();
+            
+            if (flowerNames[i] == flowerToSell)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool CheckAvailabilityMultiple(string[] flowerToSell, int[] amountRequested)
+    {
+        
+        bool avialable = true;
+        for (int i = 0; i <= flowerToSell.Length - 1; i++)
+        {
+            GetSlots();
+            Debug.Log("Loop number" + i);
+            Debug.Log("Looking for: " + flowerToSell[i] + " in amount of " + amountRequested[i]);
+            
+            for (int j = 0; j < numItemSlots; j++)
+            {
+                if (!avialable)
+                {
+                    Debug.Log("Not found flower in inventory, returning false");
+                    return avialable;
+                }
+
+                if(flowerNames[j] == null)
+                {
+                    if (j == numItemSlots - 1)
+                    {
+                        Debug.Log("Last position empty and still looking - return false");
+                        return false;
+                    }
+                    Debug.Log("Position empty and still looking - jumping position");
+                    continue;
+                }
+                
+                Debug.Log("In position " + j + " there is a " + flowerNames[j] + " in amount of " + amount[j]);
+                if (flowerNames[j] == flowerToSell[i] && amount[j] >= amountRequested[i])
+                {
+                    Debug.Log("Found flower in inventory, returning true");
+                    avialable = true;
+                    break;
+                }
+                else if(flowerNames[j] == flowerToSell[i] && amount[j] < amountRequested[i])
+                {
+                    Debug.Log(flowerToSell[i] + " not avialable in requested amount");
+                    avialable = false;
+                    continue;
+                }
+                else if(flowerNames[j] != flowerToSell[i] && j == 3)
+                {
+                    Debug.Log(flowerToSell[i] + " not avialable at all");
+                    avialable = false;
+                }
+            }
+        }
+            return avialable;
+    }
+
+    void GetSlots()
+    {
+        for (int i = 0; i < numItemSlots; i++)
+        {
+            if (itemImages[i] == null)
+            {
+                Slot[] slots = gameObject.GetComponentsInChildren<Slot>();
+                {
+                    itemImages[i] = slots[i].GetComponentInChildren<ItemImage>().GetComponent<Image>();
+                    itemText[i] = slots[i].GetComponentInChildren<Text>();
+                }
+            }
+        }
+    }
 }

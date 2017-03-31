@@ -3,35 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
-public class FlowerGrowing : MonoBehaviour {
+public class FlowerGrowing : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
 
     [SaveMember]
     public RectTransform here;
     [SaveMember]
     public Vector3 positionFlower;
  
-            public Sprite[] sprites;
-            public Image flowerImage;
-            public SpriteBank bank;
+    public Sprite[] sprites;
+    public Image flowerImage;
+    public SpriteBank bank;
 
     private Button picking;
-                [DontSaveMember]private Seeds seedsScript;
-                private Planting planting;
-                private Inventory inventory;
-              //  private Transform flowerTransform;
+    [DontSaveMember]private Seeds seedsScript;
+    private Planting planting;
+    private Inventory inventory;
 
-                bool firstGrowDone = false;
-                bool secondGrowDone = false;
-                bool picked = false;
-                bool pickable = false;
-                DateTime pickingTime;
-                TimeSpan timeToGrow;
+    bool firstGrowDone = false;
+    bool secondGrowDone = false;
+    bool picked = false;
+    bool pickable = false;
+    bool hoover = false;
+    DateTime pickingTime;
+    public TimeSpan timeToGrow;
 
-                int currentSprite = 0;
+
+    int hoursToGrow;
+    int minutesToGrow;
+    int secondsToGrow;
+    int totalSecondsToGrow;
+    int thirdsecondsToGrow;
+    int twothirdsecondsToGrow;
+
+    DateTime regrow;
+    DateTime firstGrow;
+    DateTime secondGrow;
+
+    int currentSprite = 0;
           
     private void Start()
     {
+        hoover = false;
 
         if (here == null)
         {
@@ -41,121 +56,174 @@ public class FlowerGrowing : MonoBehaviour {
 
         here.localPosition = positionFlower;
     
-                //flowerTransform = gameObject.GetComponent<Transform>();
-                picking = gameObject.GetComponent<Button>();
+        picking = gameObject.GetComponent<Button>();
                 
-                seedsScript = GameObject.FindObjectOfType<Seeds>();
-                planting = gameObject.GetComponentInParent<Planting>();
-               // picking.enabled = false;
-                flowerImage = gameObject.GetComponent<Image>();
+        seedsScript = GameObject.FindObjectOfType<Seeds>();
+        planting = gameObject.GetComponentInParent<Planting>();
+        flowerImage = gameObject.GetComponentInChildren<Image>();
 
 
-                timeToGrow = (planting.growTime - planting.plantTime);
+        timeToGrow = (planting.growTime - planting.plantTime);
 
         bank = GameObject.FindObjectOfType<SpriteBank>();
         sprites = bank.SetSprites(planting.flowerName);
 
         flowerImage.sprite = sprites[currentSprite];
 
+        hoursToGrow = timeToGrow.Hours;
+        minutesToGrow = timeToGrow.Minutes;
+        secondsToGrow = timeToGrow.Seconds;
+
+        totalSecondsToGrow = timeToGrow.Hours * 60 * 60 + timeToGrow.Minutes * 60 + timeToGrow.Seconds;
+        thirdsecondsToGrow = totalSecondsToGrow / 2;
+        twothirdsecondsToGrow = totalSecondsToGrow;
+
+
+        firstGrow = planting.plantTime.AddSeconds(thirdsecondsToGrow);
+
+        secondGrow = planting.plantTime.AddSeconds(twothirdsecondsToGrow);
 
         InvokeRepeating("CheckGrowth", 1.0f, 1.0f);
             }
 
 
-            void CheckGrowth()
+    void CheckGrowth()
             {
-                      //  Planting planting = GetComponentInParent<Planting>();
-
-                        int hoursToGrow = timeToGrow.Hours;
-                        int minutesToGrow = timeToGrow.Minutes;
-                        int secondsToGrow = timeToGrow.Seconds;
-
-                        int totalSecondsToGrow = timeToGrow.Hours * 60 * 60 + timeToGrow.Minutes * 60 + timeToGrow.Seconds;
-                        int thirdsecondsToGrow = totalSecondsToGrow / 60; // /2
-                        int twothirdsecondsToGrow = totalSecondsToGrow / 40; // /3
-
-                DateTime regrow = pickingTime.AddSeconds(twothirdsecondsToGrow);
-
-                DateTime firstGrow = planting.plantTime.AddSeconds(thirdsecondsToGrow);
-
-                DateTime secondGrow = planting.plantTime.AddSeconds(twothirdsecondsToGrow);
-
-
+        //changing time in hoover info about grow time (if hoover window is active)
+            if (hoover)
+        {
+            Text TimePopUpText = gameObject.GetComponentInChildren<Text>();
+            if (picked)
+            {
+                TimePopUpText.text = "Time to bloom\n" + ((regrow - DateTime.Now).Hours).ToString() + ":" + ((regrow - DateTime.Now).Minutes).ToString() + ":" + ((regrow - DateTime.Now).Seconds).ToString();
+            }
+            else
+            {
+                TimePopUpText.text = "Time to bloom\n" + ((planting.growTime - DateTime.Now).Hours).ToString() + ":" + ((planting.growTime - DateTime.Now).Minutes).ToString() + ":" + ((planting.growTime - DateTime.Now).Seconds).ToString();
+            }
+        }
+            //flower grows first time
         if (DateTime.Now.CompareTo(firstGrow) == 1 && !firstGrowDone && !picked)
                         {
                             ChangeSprite();
                             firstGrowDone = true;
                         }
+            //flower grows to pickable stage
                         else if (DateTime.Now.CompareTo(secondGrow) == 1 && !secondGrowDone && !picked)
                         {
                             ChangeSprite();
                             secondGrowDone = true;
-                    //  picking.enabled = true;
                             pickable = true;
+            //flower was already picked and it is possible to pick it again
                         } else if (picked && DateTime.Now.CompareTo(regrow) == 1)
                         {
                         picked = false;
-            // picking.enabled = true;
                         secondGrowDone = true;
                         pickable = true;
                         ChangeSprite();
                          }
-               // Game.UpdateFlowersGrowing(this);
             }
 
-            public void ChangeSprite()
+    public void ChangeSprite()
             {
                 currentSprite++;
                 flowerImage.sprite = sprites[currentSprite];
             }
 
-            public void PickingFlower()
+    public void PickingFlower()
             {
                 if (pickable)
                 {
 
-            //  Item instanceFlower = new Item(sprites[currentSprite], planting.flowerName);
-            /*
-                   Debug.Log( instanceFlower.sprite);
-                    //instanceFlower.nameFlower = planting.flowerName;
-                    inventory.AddItem(instanceFlower);
-                    */
-
-            //Item instanceFlower = ScriptableObject.CreateInstance<Item>();
-            // instanceFlower.nameFlower = planting.flowerName;
-            // instanceFlower.sprite = sprites[currentSprite];
+            //adding objects to inventory
             if (inventory == null)
             {
                 inventory = GameObject.FindObjectOfType<Inventory>();
             }
             inventory.AddItem(sprites[currentSprite], planting.flowerName);
-
-
             currentSprite--;
-                    flowerImage.sprite = sprites[currentSprite];
-                    secondGrowDone = false;
-            //picking.enabled = false;
+            flowerImage.sprite = sprites[currentSprite];
+            secondGrowDone = false;
             seedsScript = GameObject.FindObjectOfType<Seeds>();
-            Debug.Log("Picking flower - seedsScript: " + seedsScript);
-            seedsScript.AddSeeds();
-                    picked = true;
-                    pickable = false;
-                    pickingTime = DateTime.Now;
-                    //FlowerItem flowerInstance = new FlowerItem(planting.flowerName, planting.plantTime, planting.growTime, planting.flowerPosition);
-                }
+
+            //randomize adding seeds
+
+            if (UnityEngine.Random.value <= 0.3)
+            {
+                seedsScript.AddSeeds();
             }
 
+            //setting the ability to pick flowers and time for another picking
+            picked = true;
+            pickable = false;
+            pickingTime = DateTime.Now;
+            regrow = pickingTime.AddSeconds(twothirdsecondsToGrow);
+        }
+            }
+
+    //Destroying the flower if destroy button is active
             public void DestroyFlower()
             {
-                Debug.Log("Destroy called");
                 if (DestroyFlowerClass.destroyActive)
                 {
                     Debug.Log("Destroy if true");
-                    //GameObject flowerToDie = gameObject.GetComponentInParent<Planting>().GetComponentInChildren<FlowerGrowing>();
-                    // Destroy(flowerToDie);
                     planting.flowerPlanted = false;
                     Destroy(this.gameObject);
                 }
             }
-            
+
+    //Managing the pop ups with time to grow
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hoover = true;
+        GameObject TimePopUp = Instantiate(Resources.Load("Prefabs/GrowTimePopUp")) as GameObject;
+        TimePopUp.transform.SetParent(this.gameObject.transform, false);
+
+        Text TimePopUpText = TimePopUp.GetComponent<Text>();
+        if (picked)
+        {
+            TimePopUpText.text = "Time to bloom\n" + ((regrow - DateTime.Now).Hours).ToString() + ":" + ((regrow - DateTime.Now).Minutes).ToString() + ":" + ((regrow - DateTime.Now).Seconds).ToString();
+        }
+        else
+        {
+            TimePopUpText.text = "Time to bloom\n" + ((planting.growTime-DateTime.Now).Hours).ToString() + ":" + ((planting.growTime - DateTime.Now).Minutes).ToString() + ":" + ((planting.growTime - DateTime.Now).Seconds).ToString();
+        }
     }
+
+    public void OnPointerExit(PointerEventData data)
+    {
+        hoover = false;
+        GameObject TimePopUp = gameObject.GetComponentInChildren<Text>().gameObject;
+        Destroy(TimePopUp);
+    }
+
+    //speeding up growth
+
+    public void SpeedUpGrowth(int seconds)
+    {
+        if (!picked)
+        {
+            timeToGrow = timeToGrow.Subtract(new TimeSpan(0, 0, seconds));
+
+            Debug.Log("Time to grow: " +timeToGrow);
+            hoursToGrow = timeToGrow.Hours;
+            minutesToGrow = timeToGrow.Minutes;
+            secondsToGrow = timeToGrow.Seconds;
+
+            totalSecondsToGrow = timeToGrow.Hours * 60 * 60 + timeToGrow.Minutes * 60 + timeToGrow.Seconds;
+            thirdsecondsToGrow = totalSecondsToGrow / 2;
+            twothirdsecondsToGrow = totalSecondsToGrow;
+
+            firstGrow = planting.plantTime.AddSeconds(thirdsecondsToGrow);
+
+            secondGrow = planting.plantTime.AddSeconds(twothirdsecondsToGrow);
+            return;
+        }
+
+        regrow.AddSeconds(-seconds);
+        Debug.Log("regrow time: " + regrow);
+    }
+
+
+}

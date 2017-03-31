@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -30,31 +29,10 @@ public class DialogueParser : MonoBehaviour
 
     List<DialogueLine> lines;
 
-    // Use this for initialization
-    void Start()
+
+    public void LoadDialogue(string filename)
     {
-        string file = "Assets/Resources/Text/Dialogue/Dialogue";
-        //string sceneNum = EditorApplication.currentScene;
-        string sceneNum = SceneManager.GetActiveScene().buildIndex.ToString();
-        sceneNum = Regex.Replace(sceneNum, "[^0-9]", "");
-        file += sceneNum;
-        file += ".txt";
-
-        Debug.Log(file);
-
         lines = new List<DialogueLine>();
-
-        LoadDialogue(file);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void LoadDialogue(string filename)
-    {
         string line;
         StreamReader r = new StreamReader(filename);
 
@@ -66,7 +44,7 @@ public class DialogueParser : MonoBehaviour
                 if (line != null)
                 {
                     string[] lineData = line.Split(';');
-                    if (lineData[0] == "Player")
+                    if (lineData[0] == "Player" || lineData[0] == "Sell" || lineData[0] == "SellMultiple")
                     {
                         DialogueLine lineEntry = new DialogueLine(lineData[0], "", 0, "");
                         lineEntry.options = new string[lineData.Length - 1];
@@ -124,6 +102,8 @@ public class DialogueParser : MonoBehaviour
         return 0;
     }
 
+    //Parsing the lines with options to choose
+
     public string[] GetOptions(int lineNumber)
     {
         if (lineNumber < lines.Count)
@@ -131,5 +111,13 @@ public class DialogueParser : MonoBehaviour
             return lines[lineNumber].options;
         }
         return new string[0];
+    }
+
+    //ADD another option to parser - symbol for adding points (characters sympathy toward the player) 
+    //and triggering events, maybe with name of a bool from StoryState
+
+    public int GetLineNumber()
+    {
+        return lines.Count;
     }
 }

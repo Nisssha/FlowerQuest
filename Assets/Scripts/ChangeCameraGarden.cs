@@ -8,6 +8,7 @@ public class ChangeCameraGarden : MonoBehaviour {
     public Camera shopCamera;
     public Canvas garden;
     public Canvas shop;
+    public bool gardenActive = true;
 
     private void Update()
     {
@@ -24,36 +25,30 @@ public class ChangeCameraGarden : MonoBehaviour {
 
             gardenCamera.enabled = true;
             shopCamera.enabled = false;
+            gardenActive = true;
         }
     }
 
     public void GoToShop()
     {
-        /*
-        if (gardenCamera == null)
-        {
-            gardenCamera = GameObject.Find("Garden Camera").GetComponent<Camera>();
-        }
-        if (shopCamera == null)
-        {
-            shopCamera = GameObject.Find("Shop Camera").GetComponent<Camera>();
-        }
-
-        if (garden == null)
-        {
-            garden = GameObject.Find("Garden").GetComponent<Canvas>();
-        }
-        if (shop == null)
-        {
-            shop = GameObject.Find("Shop").GetComponent<Canvas>();
-        }
-        */
         garden.enabled = false;
         shop.enabled = true;
 
         gardenCamera.enabled = false;
         shopCamera.enabled = true;
-       // gardenCamera.gameObject.SetActive(false);
-       // shopCamera.gameObject.SetActive(true);
+
+        gardenActive = false;
+    }
+
+    public void GoToGarden()
+    {
+        garden.enabled = true;
+        shop.enabled = false;
+
+        gardenCamera.enabled = true;
+        shopCamera.enabled = false;
+
+        gardenActive = true;
+        Debug.Log("Garden active: " + gardenActive);
     }
 }

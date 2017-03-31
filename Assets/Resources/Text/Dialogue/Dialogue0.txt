@@ -1,6 +1,12 @@
-Rabbit;Hey what's up;0;R
-Cat;Nothing much man;0;L
-Rabbit;Oh that's cool;0;R
-Player;Restart:line,0;Continue:line,4
-Cat;This is a test;0;L
-Rabbit;Test test test test;0;R
+Aiden;Hi! You're new, right? I'm Aiden. Are you working for Miss Constance now?;0;R
+Kitty;Actually I'm her great niece. I'm Kitty.;0;R
+Aiden;Nice to meet you, Kitty. I would like to buy a flower. My ex ballet teacher has birthday today.;0;R
+Player;You do seem like a ballet type of guy. Buying flowers, fluttering eyelashes...:line,7:none:Aiden:-5;That's very nice! I'll get a dandelion for you.:line,4:none:Aiden:5
+Sell;Wait:none:none:0;Sell a dandelion:Dandelion:none:0
+Aiden;Thanks. I hope you like the town. Everyone's very friendly in here. Have a great day!;0;R
+End;End;0;R
+Aiden;I'm not ashamed of who I am. One red rose, please.;0;R
+Sell;Wait:none:none:0;Sell a rose:RedRose:none:0
+Kitty;Hope kissing up to Sugarplum Fairy goes well.;0;R
+Aiden;Goodbye.;0;R
+End;End;0;R

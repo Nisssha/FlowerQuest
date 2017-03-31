@@ -5,57 +5,64 @@ using UnityEngine.UI;
 using System;
 
 public class Planting : MonoBehaviour {
+    
+    [HideInInspector]public bool flowerPlanted = false;
+       
+    private Button plantButton;
+    [DontSaveMember]private Seeds seedsScript;
+
+    [HideInInspector]public string flowerName;
+    [HideInInspector]public DateTime plantTime;
+    [HideInInspector]public DateTime growTime;
+    [HideInInspector]public Vector3 flowerPosition;
 
     [SaveMember]
     public RectTransform here;
     [SaveMember]
-    public Vector3 positionPot;
+    public Vector3 positionShelf;
     [SaveMember]
-    public Vector3 scalePot;
+    public Vector3 scaleShelf;
 
-   
+    private float ScreenWidthSave;
+    private float ScreenHeightSave;
 
-        [HideInInspector]public bool flowerPlanted = false;
-       // GameObject flower;
-       
-        private Button plantButton;
-       [DontSaveMember]private Seeds seedsScript;
-        //private bool flowerPresent = false;
-
-        [HideInInspector]public string flowerName;
-        [HideInInspector]public DateTime plantTime;
-        [HideInInspector]public DateTime growTime;
-        [HideInInspector]public Vector3 flowerPosition;
-
-    /*
-    private void Awake()
-    {
-        seedsScript = GameObject.FindObjectOfType<Seeds>();
-     //   Debug.Log("Seeds script: " + seedsScript);
-    }
-    */
 
     private void Start()
+    {
+        //maintain position throught the save
+        if (here == null)
         {
-      //  Debug.Log(here);
-            if (here == null)
-                {
-                here = gameObject.GetComponent<RectTransform>();
-                positionPot = here.localPosition;
-                }
-       // Debug.Log(gameObject + " start called");
-            here.localPosition = positionPot;
+            here = gameObject.GetComponent<RectTransform>();
+            positionShelf = here.localPosition;
+            scaleShelf = here.localScale;
+            ScreenWidthSave = Screen.width;
+            ScreenHeightSave = Screen.height;
+        }
 
-             plantButton = gameObject.GetComponent<Button>();
+        float currentWidth = Screen.width;
+        float currentHeight = Screen.height;
+
+        if (currentHeight != ScreenHeightSave && currentWidth != ScreenWidthSave)
+        {
+            float ratioH = currentHeight / ScreenHeightSave;
+            float ratioW = currentWidth / ScreenWidthSave;
+            Debug.Log(ratioH);
+
+            here.localPosition = new Vector3(positionShelf.x * ratioW, positionShelf.y * ratioH, positionShelf.z);
+            here.localScale = new Vector3(scaleShelf.x * ratioW, scaleShelf.y * ratioH, positionShelf.z);
+        }
+        else
+        {
+            here.localPosition = positionShelf;
+            here.localScale = scaleShelf;
+        }
+
+    plantButton = gameObject.GetComponent<Button>();
              
     }
 
-
-    
-    
-
-        public void Click()
-        {
+    public void Click()
+    {
         if(seedsScript == null)
         {
             seedsScript = GameObject.FindObjectOfType<Seeds>();
@@ -63,96 +70,101 @@ public class Planting : MonoBehaviour {
 
          if (seedsScript.seeds <= 0 || !Seeds.seedsActive || flowerPlanted) 
         {
-            Debug.Log("seedsScript.seeds " + seedsScript.seeds);
-            Debug.Log("Seeds.seedsActive " + Seeds.seedsActive);
-            Debug.Log("retur");
-               return;
-            } //else if () {
+          return;
+        } 
+            float flowerX = gameObject.GetComponentInChildren<Image>().transform.localPosition.x;
+            float flowerY = gameObject.GetComponentInChildren<Image>().transform.localPosition.y;
 
-                float flowerX = gameObject.GetComponentInChildren<Image>().transform.localPosition.x;
-                float flowerY = gameObject.GetComponentInChildren<Image>().transform.localPosition.y;
-
-            Vector3 flowerPosition = new Vector3(flowerX, flowerY+140, this.transform.position.z);
+            Vector3 flowerPosition = new Vector3(flowerX, flowerY+80, this.transform.position.z);
 
 
-                plantTime = DateTime.Now;
-                //Debug.Log("planted at: " +plantTime);
-                float randTier = UnityEngine.Random.value;
-                float randFlower = UnityEngine.Random.value;
-                //common
-                if (randTier < 0.7f)
-                { //should be 0.5
-                    if (randFlower < 0.33f)
-                    { //should be 0.33
-                        this.flowerName = "Daisy";
-                        growTime = plantTime.AddHours(2);
+            plantTime = DateTime.Now;
+            float randTier = UnityEngine.Random.value;
+            float randFlower = UnityEngine.Random.value;
+
+        //common
+        if (randTier < 0.7f)
+        { 
+            if (randFlower < 0.33f)
+            { 
+                this.flowerName = "Daisy";
+                growTime = plantTime.AddMinutes(7);
                 GameObject flower = Instantiate(Resources.Load("Daisy"), flowerPosition, Quaternion.identity) as GameObject;
                 flower.transform.SetParent(this.transform, false);
-                    }
-                    else if (0.33f <= randFlower && randFlower < 0.66f)
-                    {
-                        this.flowerName = "Red rose";
-                        growTime = plantTime.AddHours(3);
+            }
+            else if (0.33f <= randFlower && randFlower < 0.66f)
+            {
+                this.flowerName = "Red rose";
+                growTime = plantTime.AddMinutes(10);
                 GameObject flower = Instantiate(Resources.Load("RedRose"), flowerPosition, Quaternion.identity) as GameObject;
                 flower.transform.SetParent(this.transform, false);
-                    }
-                    else if (0.66f <= randFlower && randFlower <= 1f)
-                    { //should be 0.66 in the beginning
-                        this.flowerName = "Dandelion";
-                        growTime = plantTime.AddHours(1);
+            }
+            else if (0.66f <= randFlower && randFlower <= 1f)
+            { //should be 0.66 in the beginning
+                this.flowerName = "Dandelion";
+                growTime = plantTime.AddMinutes(5);
                 GameObject flower = Instantiate(Resources.Load("Dandelion"), flowerPosition, Quaternion.identity) as GameObject;
                 flower.transform.SetParent(this.transform, false);
-                    }
-                }
-                //normal
-                if (randTier >= 0.7f && randTier < 0.9f)
-                {
-                    if (randFlower < 0.33f)
-                    {
-                        this.flowerName = "Pink rose";
-                        growTime = plantTime.AddHours(5);
+            }
+        }
+        //normal
+        if (randTier >= 0.7f && randTier < 0.8f)
+        {
+            if (randFlower < 0.33f)
+            {
+                this.flowerName = "Pink rose";
+                growTime = plantTime.AddMinutes(15);
                 GameObject flower = Instantiate(Resources.Load("PinkRose"), flowerPosition, Quaternion.identity) as GameObject;
                 flower.transform.SetParent(this.transform, false);
-                }
-                    else if (0.33f <= randFlower && randFlower < 0.66f)
-                    {
-                        this.flowerName = "Tulip";
-                        growTime = plantTime.AddHours(7);
+        }
+            else if (0.33f <= randFlower && randFlower < 0.66f)
+            {
+                this.flowerName = "Tulip";
+                growTime = plantTime.AddMinutes(15);
                 GameObject flower = Instantiate(Resources.Load("Tulip"), flowerPosition, Quaternion.identity) as GameObject;
                 flower.transform.SetParent(this.transform, false);
-                }
-                    else if (0.66f <= randFlower && randFlower <= 1f)
-                    {
-                        this.flowerName = "Narcissuss";
-                        growTime = plantTime.AddHours(7);
+        }
+            else if (0.66f <= randFlower && randFlower <= 1f)
+            {
+                this.flowerName = "Narcissuss";
+                growTime = plantTime.AddMinutes(20);
                 GameObject flower = Instantiate(Resources.Load("Narcissuss"), flowerPosition, Quaternion.identity) as GameObject;
                 flower.transform.SetParent(this.transform, false);
-                }
-                }
-                //rare
-                if (randTier >= 0.9f && randTier <= 1f)
-                {
-                    if (randFlower < 1f)
-                    {
-                        this.flowerName = "Black rose";
-                        growTime = plantTime.AddHours(12);
-                    GameObject flower = Instantiate(Resources.Load("BlackRose"), flowerPosition, Quaternion.identity) as GameObject;
-                    flower.transform.SetParent(this.transform, false);
-                }
-                }
-            //very rare TODO later, change value of rare tier
-            //this.name = "";
+            }
+        }
+        //rare
+        if (randTier >= 0.8f && randTier <= 0.93f)
+        {
+            if (randFlower <= 1f)
+            {
+                this.flowerName = "Black rose";
+                growTime = plantTime.AddMinutes(40);
+                GameObject flower = Instantiate(Resources.Load("BlackRose"), flowerPosition, Quaternion.identity) as GameObject;
+                flower.transform.SetParent(this.transform, false);
+            }
+        }
+        //very rare
+        if (randTier >= 0.93f && randTier <= 1f)
+        {
+            if (randFlower <= 1f)
+            {
+                this.flowerName = "Moon rose";
+                growTime = plantTime.AddMinutes(120);
+                GameObject flower = Instantiate(Resources.Load("MoonRose"), flowerPosition, Quaternion.identity) as GameObject;
+                flower.transform.SetParent(this.transform, false);
+            }
+        }
 
-            //Debug.Log(this.flowerName);
-            //Debug.Log("Will grow at: " +growTime);
+        //Debug.Log(this.flowerName);
+        //Debug.Log("Will grow at: " +growTime);
 
-          // GameObject thingy1 =  Instantiate(thingy, flowerPosition, Quaternion.identity);
-           // thingy1.transform.SetParent(this.transform, false);
+        // GameObject thingy1 =  Instantiate(thingy, flowerPosition, Quaternion.identity);
+        // thingy1.transform.SetParent(this.transform, false);
 
-            flowerPlanted = true;
+        flowerPlanted = true;
                 //plantButton.enabled = false;
             seedsScript.UseSeeds();
-            Sprite currentSprite = this.GetComponentInChildren<FlowerGrowing>().gameObject.GetComponent<Image>().sprite;
+            Sprite currentSprite = this.GetComponentInChildren<FlowerGrowing>().gameObject.GetComponentInChildren<Image>().sprite;
             // Debug.Log(currentSprite);
             FlowerItem flowerSave = new FlowerItem(this.flowerName, this.plantTime, this.growTime, this.flowerPosition, currentSprite);
 
